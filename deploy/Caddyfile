@@ -1,0 +1,6 @@
+# Caddy 자동 HTTPS 리버스 프록시
+# MCP_DOMAIN 환경변수의 도메인으로 Let's Encrypt 인증서를 자동 발급/갱신하고
+# 내부 mcp 컨테이너(:8000)로 프록시합니다. 결과 엔드포인트: https://<도메인>/mcp
+{$MCP_DOMAIN} {
+	reverse_proxy mcp:8000
+}

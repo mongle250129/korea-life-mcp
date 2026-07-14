@@ -107,6 +107,8 @@ docker run -p 8000:8000 korea-life-mcp
 
 카카오 클라우드에 배포하면 `https://<발급받은-도메인>/mcp` 형태의 **공개 엔드포인트**가 생성됩니다. 이 URL을 다음 단계에서 등록합니다.
 
+> 📄 **가장 쉬운 배포(VM + Docker + 자동 HTTPS) 단계별 가이드**: [`deploy/DEPLOY.md`](deploy/DEPLOY.md)
+>
 > 공모전 규정상 제출물은 **카카오 클라우드 MCP 서버 엔드포인트**여야 참가 자격이 인정됩니다.
 
 ---

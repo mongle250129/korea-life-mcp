@@ -1,0 +1,42 @@
+# korea-life-mcp 배포용 compose
+#
+# 빠른 HTTP 테스트:   docker compose -f deploy/docker-compose.yml up -d mcp
+#   -> http://<서버IP>:8000/mcp
+#
+# 운영 HTTPS(자동 인증서, 도메인 필요):
+#   MCP_DOMAIN=your.domain docker compose -f deploy/docker-compose.yml --profile tls up -d
+#   -> https://your.domain/mcp
+services:
+  mcp:
+    build:
+      context: ..           # 상위 폴더의 Dockerfile 사용
+    image: korea-life-mcp
+    environment:
+      - MCP_TRANSPORT=http
+      - HOST=0.0.0.0
+      - PORT=8000
+    ports:
+      - "8000:8000"         # HTTP 직접 접근(테스트용). HTTPS만 쓸 거면 이 줄 제거 가능
+    restart: unless-stopped
+
+  # 자동 HTTPS 리버스 프록시 (도메인이 있을 때만: --profile tls)
+  caddy:
+    image: caddy:2
+    depends_on:
+      - mcp
+    environment:
+      - MCP_DOMAIN=${MCP_DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+    profiles:
+      - tls
+
+volumes:
+  caddy_data:
+  caddy_config:
